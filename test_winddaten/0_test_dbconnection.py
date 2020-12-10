@@ -1,13 +1,13 @@
 import psycopg2
 import sys
-
+# get db log-in credentials
+exec(open('100_config_passwords.py').read())
 ### Test reach db:
-
 con = None
 
 try:
 
-    con =  psycopg2.connect("dbname='isewer' user='isewer_rw' host='postgres' port='5432' password='abwasser2020_rw'")
+    con =  psycopg2.connect(config_string_rw)
 
     cur = con.cursor()
     cur.execute('SELECT version()')

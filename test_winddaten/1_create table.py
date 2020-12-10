@@ -4,11 +4,14 @@ import sqlalchemy
 import sys
 
 # load data
-mwe = pd.read_csv("data/dbtestdata_mwe2.csv")
+mwe = pd.read_csv("data/dbtestdata_mwe100.csv")
+
+# get db log-in credentials
+exec(open('100_config_passwords.py').read())
+
 
 # connect to db
-#con =  psycopg2.connect("dbname='isewer' user='isewer_rw' host='postgres' port='5432' password='abwasser2020_rw'")
-con =  psycopg2.connect("dbname='isewer' user='isewer_adm' host='postgres' port='5432' password='B!!irkenbr0t'")
+con =  psycopg2.connect(config_string_adm)
 
 # set cursor
 cur = con.cursor()
@@ -18,7 +21,7 @@ cur = con.cursor()
 
 # execute Statement
 statement = """
-        CREATE TABLE winddaten (
+        CREATE TABLE winddaten_test (
         messdatum time PRIMARY KEY,
         st_id integer,
         st_name varchar,
@@ -39,3 +42,10 @@ con.commit()
 
 ### Close connection
 con.close()
+
+
+################################
+######## FOR TESTING: DELETE TABLE
+################################
+
+#statement = "DROP TABLE winddaten_test"
