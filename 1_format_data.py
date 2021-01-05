@@ -65,16 +65,6 @@ data_RU.columns = ["messdatum","rueb","niveau","xcoord","ycoord"]
 data_RU.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/1_data_RU.csv",index=False)
 data_NSM.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/1_data_NSM.csv",index=False)
 
-
-### SOME ANALYSIS
-data_RU.messdatum = pd.to_datetime(data_RU.messdatum, infer_datetime_format=True)   
-#min, max of date, unit of niveau?
-data_RU.groupby("rueb").agg([min,max])
-#NOTES:
-# All timeseries range: 2018-11-16 16:15:11' - ‘2020-11-16 16:15:10’
-# But niveau-minmax vaires largely (2.7/3 vs 43 (Hindeburgstr))
-
-
 ### CREATE MWE AND SAVE
 data_RU.messdatum = pd.to_datetime(data_RU.messdatum, infer_datetime_format=True)   
 
