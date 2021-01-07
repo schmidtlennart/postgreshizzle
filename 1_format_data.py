@@ -47,7 +47,7 @@ data_NSM = data1.loc[:,~data1.columns.str.contains("RU_")].copy()
 
 # wide to long transformation
 data_RU = pd.wide_to_long(data_RU,stubnames=["RU_"],i="DateTime",j="RÜB", suffix="\w+")
-data_NSM = pd.wide_to_long(data_NSM,stubnames=["NSM"],i="DateTime",j="Messstation")
+data_NSM = pd.wide_to_long(data_NSM,stubnames=["NSM"],i="DateTime",j="Messstation")                                                 
 
 data_RU = data_RU.reset_index()
 data_NSM = data_NSM.reset_index()
@@ -62,8 +62,8 @@ data_RU = data_RU.merge(metadata[["STRASSENNA","xcoord","ycoord"]],"left",left_o
 data_RU.columns = ["messdatum","rueb","niveau","xcoord","ycoord"]
 
 # save
-data_RU.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/1_data_RU.csv",index=False)
-data_NSM.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/1_data_NSM.csv",index=False)
+data_RU.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU.csv",index=False)
+data_NSM.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_NSM.csv",index=False)
 
 ### CREATE MWE AND SAVE
 data_RU.messdatum = pd.to_datetime(data_RU.messdatum, infer_datetime_format=True)   
@@ -72,6 +72,6 @@ data_RU.messdatum = pd.to_datetime(data_RU.messdatum, infer_datetime_format=True
 
 data_mwe = data_RU.set_index("messdatum")#for slicing
 data_mwe = data_mwe.loc["2018-11-16 16:15:11":"2018-11-30 16:15:11"].reset_index()
-data_mwe.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/1_data_RU_mwe.csv",index=False)
+data_mwe.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU_mwe.csv",index=False)
 
 len(data_mwe)

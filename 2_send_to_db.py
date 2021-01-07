@@ -4,29 +4,27 @@ import sys
 
 # get db log-in credentials
 exec(open('100_config_passwords.py').read())
-
+engine_string_rw = engine_string_local
 
 # load data
 #mwe = pd.read_csv("data/dbtestdata_mwe1mio.csv")
-mwe = pd.read_csv("data/dbtestdata_mwe100.csv")
+mwe = pd.read_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU_mwe.csv")
 ################################
 ########CREATE TABLE AND LOAD DATA INTO TABLE USING SQLALCHEMY
 ################################
 ### make columns names lowercase
 mwe.columns = map(str.lower,mwe.columns)
-#mwe.messdatum = pd.to_datetime(mwe.messdatum)
+mwe.messdatum = pd.to_datetime(mwe.messdatum)
 
 
 from sqlalchemy import create_engine
+
 engine = create_engine(engine_string_rw)
 # automatically creates table
 # new table
 #mwe.to_sql('winddaten', engine, index=False, if_exists="append")
 # append to existing one (does not store date as date)
 # use method=multi, way faster"
-mwe.to_sql('winddaten_test2', engine, index=False,method="multi", if_exists="append")
+mwe.to_sql('strangberlin', engine, index=False,method="multi", if_exists="replace")
 
-mwe.dtypes
-
-sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value violates unique constraint "winddaten_test2_pkey"
-DETAIL:  Key (messdatum)=(09:50:00) already exists.
+mwe.head()
