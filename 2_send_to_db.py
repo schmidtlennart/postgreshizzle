@@ -8,7 +8,7 @@ engine_string_rw = engine_string_local
 
 # load data
 #mwe = pd.read_csv("data/dbtestdata_mwe1mio.csv")
-mwe = pd.read_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU_mwe.csv")
+mwe = pd.read_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU.csv")
 ################################
 ########CREATE TABLE AND LOAD DATA INTO TABLE USING SQLALCHEMY
 ################################
@@ -26,5 +26,3 @@ engine = create_engine(engine_string_rw)
 # append to existing one (does not store date as date)
 # use method=multi, way faster"
 mwe.to_sql('strangberlin', engine, index=False,method="multi", if_exists="replace")
-
-mwe.head()
