@@ -3,10 +3,10 @@
 
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
-
-path = "/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/Export_clean_header.csv"
-path_meta = "/Users/schmidle/Documents/GIT-Projects/isewer/data_analysis/data/RUEs/RUEs_StrangBerlin.csv"
+path = "/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/Export_clean_header.csv"
+path_meta = "/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/RUEs_StrangBerlin.csv"
 
 data = pd.read_csv(path,encoding = "ISO-8859-1", sep=";",decimal=",")
 metadata = pd.read_csv(path_meta,sep=",")
@@ -45,18 +45,35 @@ data_RU = data1.loc[:,~data1.columns.str.contains("NSM")].copy()
 # NSM: drop RUs
 data_NSM = data1.loc[:,~data1.columns.str.contains("RU_")].copy()
 
-# wide to long transformation
-data_RU = pd.wide_to_long(data_RU,stubnames=["RU_"],i="DateTime",j="RÜB", suffix="\w+")
-data_NSM = pd.wide_to_long(data_NSM,stubnames=["NSM"],i="DateTime",j="Messstation")                                                 
+# RU: calculate % and add as column
+schwellenhoehen = {'RU_BerlinerAllee':1.75,'RU_Hindenburgstrasse':1.32,'RU_Uferstrasse':2.44}
+fig, axs = plt.subplots(1,3)
+axs = axs.flatten()
+for i,col in enumerate(schwellenhoehen.keys()):
+    print(i)
+    name = "PER_"+col
+    value = schwellenhoehen[col]
+    data_RU[name] = data_RU[col]/value*100 #percent of schwellenhöhe
+    axs[i].plot(data_RU[name],data_RU[col])
+    axs[i].set(xlabel="original",ylabel="percent",title=col)
+# Does this make sense?
+plt.tight_layout()
+plt.show()
+plt.savefig("plots/true_vs_percent.png")
 
-data_RU = data_RU.reset_index()
-data_NSM = data_NSM.reset_index()
+
+# wide to long transformation
+data_RU_out = pd.wide_to_long(data_RU,stubnames=["RU_","PER_RU_"],i="DateTime",j="RÜB", suffix="\w+")
+data_NSM_out = pd.wide_to_long(data_NSM,stubnames=["NSM"],i="DateTime",j="Messstation")                                                 
+
+data_RU_out = data_RU_out.reset_index()
+data_NSM_out = data_NSM_out.reset_index()
 #### Add coord to RU-data
 # rename in metadata for merge
 coord_dict = {"B 31 A AUTOBAHNZUBRINGER MITTE":'BerlinerAllee',"HINDENBURGSTR":'Hindenburgstrasse',"UFERSTR":'Uferstrasse'}
 metadata.STRASSENNA = metadata.STRASSENNA.map(coord_dict)
 # merge
-data_RU = data_RU.merge(metadata[["STRASSENNA","xcoord","ycoord"]],"left",left_on="RÜB",right_on="STRASSENNA").drop("STRASSENNA",1)
+data_RU = data_RU_out.merge(metadata[["STRASSENNA","xcoord","ycoord"]],"left",left_on="RÜB",right_on="STRASSENNA").drop("STRASSENNA",1)
 
 # rename
 data_RU.columns = ["messdatum","rueb","niveau","xcoord","ycoord"]
