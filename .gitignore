@@ -5,3 +5,4 @@ data/*
 workspace.code-workspace
 # do not include passwords
 100_config_passwords.py
+.ipynb_checkpoints/

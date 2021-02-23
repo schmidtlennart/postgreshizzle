@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/Export_clean_header.csv"
-path_meta = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/RUEs_StrangBerlin.csv"
+path = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/Export_clean_header.csv"
+path_meta = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/RUEs_StrangBerlin.csv"
 
 data = pd.read_csv(path,encoding = "ISO-8859-1", sep=";",decimal=",")
 metadata = pd.read_csv(path_meta,sep=",")
@@ -42,9 +42,13 @@ data_NSM = data1.loc[:,~data1.columns.str.contains("RU_")].copy()
 # RU: calculate % and add as column
 # % of schwelle and % of overall volume
 # static: height of schwelle, maximum height possible and schwellenhöhe as percent of that maximum value (from excel file)
-schwellenhoehen = {'BerlinerAllee':1.75,'Hindenburgstrasse':1.32,'Uferstrasse':2.44}
+schwellenhoehen = {'BerlinerAllee':1.85,'Hindenburgstrasse':1.32,'Uferstrasse':2.44}
 maxhoehen = {'BerlinerAllee':4.52,'Hindenburgstrasse':3.57,'Uferstrasse':5.23}
-schwellenhoehen_per_m = {'BerlinerAllee':38.72,'Hindenburgstrasse':36.98,'Uferstrasse':46.65}
+schwellenhoehen_per_m = {'BerlinerAllee':40.93,'Hindenburgstrasse':36.98,'Uferstrasse':46.65}
+
+# ax = data_RU.RU_BerlinerAllee.plot()
+# ax.axhline(1.75,c="black")
+# plt.show()
 
 fig, axs = plt.subplots(1,3,figsize=(10,6))
 axs = axs.flatten()
