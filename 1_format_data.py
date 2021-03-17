@@ -3,8 +3,8 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-path = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/Export_clean_header.csv"
-path_meta = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/RUEs_StrangBerlin.csv"
+path = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/export1/Export_clean_header.csv"
+path_meta = "/Users/schmidle/OneDrive/i-SEWER/AP3_Prototyp - konzeptioneller digitaler Zwilling/1_Bestandsaufnahme/3.1.2 Datenverfügbarkeit/Prozessierte_daten/Datenexport_bnn/export1/RUEs_StrangBerlin.csv"
 
 data = pd.read_csv(path,encoding = "ISO-8859-1", sep=";",decimal=",")
 metadata = pd.read_csv(path_meta,sep=",")
@@ -105,8 +105,8 @@ data_RU_out = data_RU_out.merge(metadata[["STRASSENNA","xcoord","ycoord"]],"left
 data_RU_out.columns = ["messdatum","rueb","niveau","niveau_per_s","niveau_per_m","schwelle","schwelle_per","max","max_per","xcoord","ycoord"]
 data_NSM.columns = ['messdatum', 'NSM1', 'NSM2', 'NSM3', 'NSM4', 'NSM5', 'NSM6', 'NSM7','NSM8']
 # save
-data_RU_out.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU.csv",index=False)
-data_NSM.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_NSM.csv",index=False)
+data_RU_out.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data/1_data_RU.csv",index=False)
+data_NSM.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data/1_data_NSM.csv",index=False)
 
 ### CREATE MWE AND SAVE
 data_RU_out.messdatum = pd.to_datetime(data_RU_out.messdatum, infer_datetime_format=True)   
@@ -117,14 +117,9 @@ data_mwe = data_RU_out.set_index("messdatum")#for slicing
 data_mwe_nsm = data_NSM.set_index("messdatum")#for slicing
 
 # NSM: select time period with more values
-data_mwe_nsm.groupby()
-
 data_mwe = data_mwe.loc["2018-11-16 16:15:11":"2018-11-30 16:15:11"].reset_index()
 data_mwe_nsm2 = data_mwe_nsm.loc["2018-11-16 16:15:11":"2018-11-30 16:15:11"].reset_index()
 
-ax = data_mwe_nsm2.NSM1.plot()
-
-
-data_mwe.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data_repo/data/RUEs/1_data_RU_mwe.csv",index=False)
+data_mwe.to_csv("/Users/schmidle/Documents/GIT-Projects/isewer/data/1_data_RU_mwe.csv",index=False)
 
 len(data_mwe)
