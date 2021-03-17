@@ -3,7 +3,7 @@ import psycopg2
 import sys
 
 # MWE or full dataset?
-mwe = False #True,False
+mwe = True #True,False
 
 # get db log-in credentials
 exec(open('100_config_passwords.py').read())
@@ -25,7 +25,7 @@ data.columns = map(str.lower,data.columns)
 data.messdatum = pd.to_datetime(data.messdatum)
 
 from sqlalchemy import create_engine
-engine = create_engine(eng_str)
+engine = create_engine(eng_str,executemany_mode='values',executemany_values_page_size=10000, executemany_batch_page_size=5000)
 # automatically creates table
 # new table
 #mwe.to_sql('winddaten', engine, index=False, if_exists="append")
