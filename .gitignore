@@ -3,6 +3,7 @@ data/*
 .gitignore~
 .vscode/
 workspace.code-workspace
+plots/
 # do not include passwords
 100_config_passwords.py
 .ipynb_checkpoints/
